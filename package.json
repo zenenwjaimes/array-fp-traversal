@@ -27,5 +27,12 @@
   "bugs": {
     "url": "https://github.com/zenenwjaimes/array-stream-traversal/issues"
   },
-  "homepage": "https://github.com/zenenwjaimes/array-stream-traversal#readme"
+  "homepage": "https://github.com/zenenwjaimes/array-stream-traversal#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "jest": "^26.0.1"
+  }
 }
