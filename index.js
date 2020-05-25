@@ -1,3 +1,8 @@
+/**
+ * Returns custom invalid length exception
+ * @param {string} message - exception message
+ * @return {Error}
+ */
 function InvalidLengthException(message) {
   const error = new Error(message);
 
@@ -18,8 +23,13 @@ const throwInvalidReadLength= (array, length) => {
   const errorMsg = 'Invalid read length: '+ length;
 
   throw new InvalidPositionException(errorMsg);
-}
+};
 
+/**
+ * Returns custom invalid position exception
+ * @param {string} message - exception message
+ * @return {Error}
+ */
 function InvalidPositionException(message) {
   const error = new Error(message);
 
@@ -44,12 +54,24 @@ const throwInvalidPosition = (array, position) => {
   const errorMsg = 'Invalid position: '+ position + ' for len: ' + len;
 
   throw new InvalidPositionException(errorMsg);
-}
+};
 
-const arrayStreamT = (data, makeCopy = true, position = 0) => {
+const SeekPos = {
+  SET: 0,
+  CURR: 1,
+};
+Object.freeze(SeekPos);
+
+const arrayStreamT = (
+    data,
+    makeCopy = true,
+    position = 0,
+    whence = SeekPos.SET,
+) => {
   const array = makeCopy ? data.slice():data;
   let current = 0;
-  
+  let seekPos = whence;
+
   if (isInvalidPosition(array, position)) {
     throwInvalidPosition(array, position);
   }
@@ -58,7 +80,7 @@ const arrayStreamT = (data, makeCopy = true, position = 0) => {
 
   return ({
     array,
-    read(len=-1) {
+    read(len = -1) {
       if (isInvalidReadLength(array, len)) {
         throwInvalidReadLength(array, len);
       }
@@ -74,18 +96,30 @@ const arrayStreamT = (data, makeCopy = true, position = 0) => {
       current += len;
       return array.slice(currentPos, len + currentPos);
     },
-    seek(seekPosition) {
-      if (isInvalidPosition(array, seekPosition)) {
-        throwInvalidPosition(array, seekPosition);
+    seek(offset, whence = seekPos) {
+      if (isInvalidPosition(array, offset)) {
+        throwInvalidPosition(array, offset);
       }
 
-      current = seekPosition;
+      seekPos = whence;
+
+      if (seekPos == SeekPos.SET) {
+        current = offset;
+      } else if (seekPos == SeekPos.CURR) {
+        current += offset;
+      }
+
       return this;
     },
-    tell(){ return current; },
+    tell() {
+      return current;
+    },
   });
 };
 
-exports.arrayStreamT = arrayStreamT;
-exports.InvalidPositionException = InvalidPositionException;
-exports.InvalidLengthException = InvalidLengthException;
+exports.ArrayStreamT = {
+  load: arrayStreamT,
+  SeekPos: SeekPos,
+  InvalidPositionException: InvalidPositionException,
+  InvalidLengthException: InvalidLengthException,
+};
