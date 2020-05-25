@@ -1,6 +1,6 @@
 {
   "name": "@zenenwjaimes/array-stream-traversal",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "Traverse arrays with file stream like abilities (seek, read, tell)",
   "main": "index.js",
   "scripts": {
