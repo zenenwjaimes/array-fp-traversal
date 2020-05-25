@@ -46,7 +46,7 @@ const throwInvalidPosition = (array, position) => {
   throw new InvalidPositionException(errorMsg);
 }
 
-const arrayStreamT = (data, makeCopy=false, position = 0) => {
+const arrayStreamT = (data, makeCopy = true, position = 0) => {
   const array = makeCopy ? data.slice():data;
   let current = 0;
   
@@ -88,3 +88,4 @@ const arrayStreamT = (data, makeCopy=false, position = 0) => {
 
 exports.arrayStreamT = arrayStreamT;
 exports.InvalidPositionException = InvalidPositionException;
+exports.InvalidLengthException = InvalidLengthException;
