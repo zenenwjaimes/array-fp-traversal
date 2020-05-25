@@ -1,0 +1,31 @@
+{
+  "name": "@zenenwjaimes/array-stream-traversal",
+  "version": "1.0.0",
+  "description": "Traverse arrays with file stream like abilities (seek, read, tell)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenenwjaimes/array-stream-traversal.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "keywords": [
+    "array",
+    "stream",
+    "traverse",
+    "traversal",
+    "io",
+    "file",
+    "pointer"
+  ],
+  "author": "zenen jaimes",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/zenenwjaimes/array-stream-traversal/issues"
+  },
+  "homepage": "https://github.com/zenenwjaimes/array-stream-traversal#readme"
+}
