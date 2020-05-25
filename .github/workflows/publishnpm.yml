@@ -12,7 +12,9 @@ jobs:
       with:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
-    - run: npm install
-    - run: npm publish
+        # Defaults to the user or organization that owns the workflow file
+        scope: '@zenenwjaimes/array-stream-traversal' 
+    - run: yarn
+    - run: yarn publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
