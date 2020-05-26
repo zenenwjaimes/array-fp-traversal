@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Submit Node.js Package
 on:
   release:
     types: [created]
@@ -19,13 +19,13 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     # Setup .npmrc file to publish to GitHub Packages
-    - uses: actions/setup-node@v1
-      with:
-        always-auth: true
-        registry-url: 'https://npm.pkg.github.com'
+    #- uses: actions/setup-node@v1
+    #  with:
+    #    always-auth: true
+    #    registry-url: 'https://npm.pkg.github.com'
         # Defaults to the user or organization that owns the workflow file
-        scope: '@zenenwjaimes/array-stream-traversal'
+        #    scope: '@zenenwjaimes/array-stream-traversal'
     # Publish to GitHub Packages
-    - run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #- run: npm publish
+    #  env:
+    #    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
