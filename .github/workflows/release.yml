@@ -32,4 +32,4 @@ jobs:
       - run: git push --tags && git push
       - run: yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GHUB}}
+          NODE_AUTH_TOKEN: ${{ secrets.SuperSecret }}
