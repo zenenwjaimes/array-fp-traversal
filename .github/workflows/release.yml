@@ -44,6 +44,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
           scope: '@zenenwjaimes/array-stream-traversal'
       - run: yarn install --registry https://registry.npmjs.org/
+      - run: yarn version --minor
       - run: yarn publish --registry https://registry.npmjs.org/
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE}}
