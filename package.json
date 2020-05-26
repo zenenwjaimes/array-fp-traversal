@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/zenenwjaimes/array-stream-traversal.git"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "keywords": [
     "array",
     "stream",
@@ -30,6 +33,13 @@
     "@babel/core": "^7.9.6",
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
-    "jest": "^26.0.1"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.1.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5"
   }
 }
