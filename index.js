@@ -1,4 +1,10 @@
 /**
+ * External ArrayStreamT object
+ *
+ * @module ArrayStreamT
+ */
+
+/**
  * Returns custom invalid length exception
  * @param {string} message - exception message
  * @return {Error}
@@ -56,19 +62,37 @@ const throwInvalidPosition = (array, position) => {
   throw new InvalidPositionException(errorMsg);
 };
 
+/**
+ * Seek whence constant
+ * SET: Starts seek from beginning of array
+ * CURR: Seek from current position
+ * @enum {integer}
+ *
+ * @return {object}
+ */
 const SeekPos = {
   SET: 0,
   CURR: 1,
 };
 Object.freeze(SeekPos);
 
+/**
+ * ArrayStreamT Object
+ *
+ * @param {Array} data
+ * @param {boolean} makeCopy: Copies the array (recommended), default true
+ * @param {integer} position: Starting position, default 0
+ * @param {integer} whence: Where to start seeking from, default SeekPos.SET
+ *
+ * @return {object} returns array, read/seek/tell methods
+ */
 const arrayStreamT = (
     data,
     makeCopy = true,
     position = 0,
     whence = SeekPos.SET,
 ) => {
-  const array = makeCopy ? data.slice():data;
+  const array = makeCopy ? data.slice() : data;
   let current = 0;
   let seekPos = whence;
 
@@ -80,6 +104,12 @@ const arrayStreamT = (
 
   return ({
     array,
+    /**
+     * Read x amount of bytes/items
+     *
+    * @param {integer} len: -1 reads til eof, has to be 0+
+    * @return {array}
+    */
     read(len = -1) {
       if (isInvalidReadLength(array, len)) {
         throwInvalidReadLength(array, len);
@@ -96,6 +126,13 @@ const arrayStreamT = (
       current += len;
       return array.slice(currentPos, len + currentPos);
     },
+    /**
+     * Sets the current position
+     *
+     * @param {integer} offset: position
+     * @param {integer} whence: where to start seeking (start, current)
+     * @return {this}
+     */
     seek(offset, whence = seekPos) {
       if (isInvalidPosition(array, offset)) {
         throwInvalidPosition(array, offset);
@@ -111,6 +148,11 @@ const arrayStreamT = (
 
       return this;
     },
+    /**
+     * Returns current position of the pointer
+     *
+     * @return {integer}
+     */
     tell() {
       return current;
     },
