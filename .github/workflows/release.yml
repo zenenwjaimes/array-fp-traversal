@@ -38,4 +38,4 @@ jobs:
       - run: echo "::set-env name=NODE_AUTH_TOKEN::$NPM_TOKEN"
         env:
           NPM_TOKEN: ${{secrets.NODE}}
-      - run: yarn publish --registry https://registry.npmjs.org/
+      - run: yarn publish --access public --registry https://registry.npmjs.org/
