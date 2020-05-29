@@ -82,7 +82,7 @@ Object.freeze(SeekPos);
  * @param {Array} data
  * @param {boolean} makeCopy: Copies the array (recommended), default true
  * @param {integer} position: Starting position, default 0
- * @param {integer} whence: Where to start seeking from, default SeekPos.SET
+ * @param {integer} whence: Where to start seeking from, default SeekPos.CURR
  *
  * @return {object} returns array, read/seek/tell methods
  */
@@ -90,7 +90,7 @@ const arrayStreamT = (
     data,
     makeCopy = true,
     position = 0,
-    whence = SeekPos.SET,
+    whence = SeekPos.CURR,
 ) => {
   const array = makeCopy ? data.slice() : data;
   let current = 0;
