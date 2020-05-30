@@ -78,6 +78,13 @@ describe('ArrayStreamT position modifications', () => {
 });
 
 describe('ArrayStreamT reading', () => {
+  test('seek to end of array and test eof', () => {
+    const items = [4, 4];
+    const arrayStream = ArrayStreamT.load(items, true, 0);
+
+    expect(arrayStream.seek(1).eof()).toBeTruthy();
+  });
+
   test('read to eof [4, 4] and then try to read after eof', () => {
     const items = [4, 4];
     const arrayStream = ArrayStreamT.load(items, true, 0);

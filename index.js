@@ -105,6 +105,14 @@ const arrayStreamT = (
   return ({
     array,
     /**
+     * Check if eof based on internal state (curr pos + state array len)
+     *
+     * @return {boolean}
+     */
+    eof() {
+      return current == (array.length - 1);
+    },
+    /**
      * Read x amount of bytes/items
      *
     * @param {integer} len: -1 reads til eof or has to be 0+
