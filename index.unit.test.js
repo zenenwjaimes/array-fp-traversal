@@ -78,6 +78,14 @@ describe('ArrayStreamT position modifications', () => {
 });
 
 describe('ArrayStreamT reading', () => {
+  test('read to eof [4, 4] and then try to read after eof', () => {
+    const items = [4, 4];
+    const arrayStream = ArrayStreamT.load(items, true, 0);
+
+    expect(arrayStream.read(-1)).toEqual([4, 4]);
+    expect(arrayStream.read(1)).toEqual([]);
+  });
+
   test('read 1 byte: seek to pos 5 (value 10)', () => {
     const items = [4, 4, 4, 4, 4, 10, 9, 2];
     const arrayStream = ArrayStreamT.load(items, true, 0);
@@ -85,12 +93,16 @@ describe('ArrayStreamT reading', () => {
     expect(arrayStream.seek(5).read(1)).toEqual([10]);
   });
 
-  test('read 1: seek to pos 1, return [4] and check pos changed to 2', () => {
+  test('seek 1, read 0(doesn\'t advance position), return [4]', () => {
     const items = [4, 4];
-    const arrayStream = ArrayStreamT.load(items, true, 0);
+    const arrayStream = ArrayStreamT.load(items, true);
+    expect(arrayStream.seek(1).read(0)).toEqual([4]);
+  });
 
-    expect(arrayStream.seek(1).read(1)).toEqual([4]);
-    expect(arrayStream.tell()).toEqual(2);
+  test('seek 1, read 1(advances pos), return []', () => {
+    const items = [4, 4];
+    const arrayStream = ArrayStreamT.load(items, true);
+    expect(arrayStream.seek(1).read(1)).toEqual([]);
   });
 
   const whenceTestName =

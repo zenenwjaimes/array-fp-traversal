@@ -107,7 +107,7 @@ const arrayStreamT = (
     /**
      * Read x amount of bytes/items
      *
-    * @param {integer} len: -1 reads til eof, has to be 0+
+    * @param {integer} len: -1 reads til eof or has to be 0+
     * @return {array}
     */
     read(len = -1) {
@@ -116,15 +116,28 @@ const arrayStreamT = (
       }
 
       const currentPos = this.tell();
+      const expectedPos = currentPos + len;
 
+      // return the entirety from current position
       if (len === -1) {
         current = array.length - 1;
 
         return array.slice(currentPos);
       }
 
+      // trying to read past eof with more than 0 bytes
+      if (expectedPos > (array.length - 1)) {
+        return [];
+      }
+
+      // len is 0, read just 1 byte and it's not eof
+      if (len === 0) {
+        return array.slice(currentPos).slice(-1);
+      }
+
+      // not overflowing, advance existing pos and also read
       current += len;
-      return array.slice(currentPos, len + currentPos);
+      return array.slice(currentPos, expectedPos);
     },
     /**
      * Sets the current position
