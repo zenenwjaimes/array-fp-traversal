@@ -110,7 +110,7 @@ const arrayStreamT = (
      * @return {boolean}
      */
     eof() {
-      return (current == (array.length - 1));
+      return (current === array.length);
     },
     /**
      * Read x amount of bytes/items
@@ -128,23 +128,24 @@ const arrayStreamT = (
 
       // return the entirety from current position
       if (len === -1) {
-        current = array.length - 1;
+        current = array.length;
 
         return array.slice(currentPos);
       }
 
-      // trying to read past eof with more than 0 bytes
-      if (expectedPos > (array.length - 1)) {
-        return [];
+      // len is 0, read just current byte at pointer
+      if (len === 0 || (len === 1 && this.eof())) {
+        return array.slice(currentPos).slice(0, 1);
       }
 
-      // len is 0, read just current byte at pointer
-      if (len === 0) {
-        return array.slice(currentPos).slice(0, 1);
+      // trying to read past eof with more than 0 bytes
+      if (this.eof()) {
+        return [];
       }
 
       // not overflowing, advance existing pos and also read
       this.seek(len);
+
       return array.slice(currentPos, expectedPos);
     },
     /**

@@ -81,8 +81,8 @@ describe('ArrayStreamT reading', () => {
   test('seek to end of array and test eof', () => {
     const items = [4, 4];
     const arrayStream = ArrayStreamT.load(items, true, 0);
-
-    expect(arrayStream.seek(1).eof()).toBeTruthy();
+    arrayStream.seek(1).read(1);
+    expect(arrayStream.eof()).toBeTruthy();
   });
 
   test('read to eof [4, 4] and then try to read after eof', () => {
@@ -104,6 +104,7 @@ describe('ArrayStreamT reading', () => {
     const items = [4, 4];
     const arrayStream = ArrayStreamT.load(items, true);
     expect(arrayStream.seek(1).read(0)).toEqual([4]);
+    expect(arrayStream.tell()).toEqual(1);
   });
 
   test('seek 1, read 1(advances pos), return []', () => {
@@ -111,14 +112,10 @@ describe('ArrayStreamT reading', () => {
     const arrayStream = ArrayStreamT.load(items, true);
     expect(arrayStream.tell()).toEqual(0); // idx is -1 to start
     expect(arrayStream.seek(1).tell()).toEqual(1); // idx is 0 after seek
-    expect(arrayStream.read(1)).toEqual([]);
+    expect(arrayStream.read(1)).toEqual([4]);
   });
 
-  const whenceTestName =
-    'read consecutive first 3 items then ' +
-    'manually seek 1 more position and read(0, current val)';
-
-  test(whenceTestName, () => {
+  test('read bytes until the end', () => {
     const items = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const whence = ArrayStreamT.SeekPos.CURR;
     const arrayStream = ArrayStreamT.load(items, true, 0, whence);
@@ -126,13 +123,17 @@ describe('ArrayStreamT reading', () => {
     expect(arrayStream.read(1)).toEqual([0]); // idx should be 0 val [0]
     expect(arrayStream.read(1)).toEqual([1]); // idx should be 1 val [1]
     expect(arrayStream.read(1)).toEqual([2]); // idx should be 2 val [2]
-    expect(arrayStream.tell()).toEqual(3);
-    expect(arrayStream.seek(1).tell()).toEqual(4); // idx should be 4
-    expect(arrayStream.read(0)).toEqual([4]); //
+    expect(arrayStream.read(1)).toEqual([3]); // idx should be 2 val [3]
+    expect(arrayStream.read(1)).toEqual([4]); // idx should be 2 val [4]
+    expect(arrayStream.read(1)).toEqual([5]); // idx should be 2 val [5]
+    expect(arrayStream.read(1)).toEqual([6]); // idx should be 2 val [6]
+    expect(arrayStream.read(1)).toEqual([7]); // idx should be 2 val [7]
+    expect(arrayStream.tell()).toEqual(8);
+    expect(arrayStream.read(1)).toEqual([8]); // idx should be 2 val [8]
   });
 
   test('ghub example code', () => {
-    const exampleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const exampleArray = [0, 1, 2, 3, 4, 5, 6, 7];
 
     try {
       const ast = ArrayStreamT.load(exampleArray);
