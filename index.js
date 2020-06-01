@@ -89,7 +89,7 @@ Object.freeze(SeekPos);
 const arrayStreamT = (
     data,
     makeCopy = true,
-    position = -1,
+    position = 0,
     whence = SeekPos.CURR,
 ) => {
   const array = makeCopy ? data.slice() : data;

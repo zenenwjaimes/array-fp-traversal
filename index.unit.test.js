@@ -106,12 +106,12 @@ describe('ArrayStreamT reading', () => {
     expect(arrayStream.seek(1).read(0)).toEqual([4]);
   });
 
-  test('seek 1, read 1(advances pos), return [4]', () => {
+  test('seek 1, read 1(advances pos), return []', () => {
     const items = [4, 4];
     const arrayStream = ArrayStreamT.load(items, true);
-    expect(arrayStream.tell()).toEqual(-1); // idx is -1 to start
-    expect(arrayStream.seek(1).tell()).toEqual(0); // idx is 0 after seek
-    expect(arrayStream.read(1)).toEqual([4]);
+    expect(arrayStream.tell()).toEqual(0); // idx is -1 to start
+    expect(arrayStream.seek(1).tell()).toEqual(1); // idx is 0 after seek
+    expect(arrayStream.read(1)).toEqual([]);
   });
 
   const whenceTestName =
