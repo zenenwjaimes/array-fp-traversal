@@ -89,7 +89,7 @@ Object.freeze(SeekPos);
 const arrayStreamT = (
     data,
     makeCopy = true,
-    position = 0,
+    position = -1,
     whence = SeekPos.CURR,
 ) => {
   const array = makeCopy ? data.slice() : data;
@@ -110,7 +110,7 @@ const arrayStreamT = (
      * @return {boolean}
      */
     eof() {
-      return current == (array.length - 1);
+      return (current == (array.length - 1));
     },
     /**
      * Read x amount of bytes/items
@@ -138,13 +138,13 @@ const arrayStreamT = (
         return [];
       }
 
-      // len is 0, read just 1 byte and it's not eof
+      // len is 0, read just current byte at pointer
       if (len === 0) {
-        return array.slice(currentPos).slice(-1);
+        return array.slice(currentPos).slice(0, 1);
       }
 
       // not overflowing, advance existing pos and also read
-      current += len;
+      this.seek(len);
       return array.slice(currentPos, expectedPos);
     },
     /**

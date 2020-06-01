@@ -106,24 +106,29 @@ describe('ArrayStreamT reading', () => {
     expect(arrayStream.seek(1).read(0)).toEqual([4]);
   });
 
-  test('seek 1, read 1(advances pos), return []', () => {
+  test('seek 1, read 1(advances pos), return [4]', () => {
     const items = [4, 4];
     const arrayStream = ArrayStreamT.load(items, true);
-    expect(arrayStream.seek(1).read(1)).toEqual([]);
+    expect(arrayStream.tell()).toEqual(-1); // idx is -1 to start
+    expect(arrayStream.seek(1).tell()).toEqual(0); // idx is 0 after seek
+    expect(arrayStream.read(1)).toEqual([4]);
   });
 
   const whenceTestName =
-    'seek current position, read 1, seek 1,' +
-    'return is [1], tell is 2, seek 1, pos should be 3';
+    'read consecutive first 3 items then ' +
+    'manually seek 1 more position and read(0, current val)';
 
   test(whenceTestName, () => {
     const items = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const whence = ArrayStreamT.SeekPos.CURR;
     const arrayStream = ArrayStreamT.load(items, true, 0, whence);
 
-    expect(arrayStream.seek(1).read(1)).toEqual([1]);
-    expect(arrayStream.tell()).toEqual(2);
-    expect(arrayStream.seek(1).tell()).toEqual(3);
+    expect(arrayStream.read(1)).toEqual([0]); // idx should be 0 val [0]
+    expect(arrayStream.read(1)).toEqual([1]); // idx should be 1 val [1]
+    expect(arrayStream.read(1)).toEqual([2]); // idx should be 2 val [2]
+    expect(arrayStream.tell()).toEqual(3);
+    expect(arrayStream.seek(1).tell()).toEqual(4); // idx should be 4
+    expect(arrayStream.read(0)).toEqual([4]); //
   });
 
   test('ghub example code', () => {
